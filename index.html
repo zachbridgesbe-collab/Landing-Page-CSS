@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShoeZak — ShoeZak Shoes</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    color:#111;
+    background:#fff;
+}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+
+.topbar{
+    background:#111;color:#fff;text-align:center;
+    padding:8px;font-size:11px;letter-spacing:.7px;
+}
+
+header{
+    height:74px;background:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 5%;
+    position:sticky;top:0;z-index:1000;
+    border-bottom:1px solid #eee;
+}
+.logo{
+    font-size:28px;font-weight:1000;font-style:italic;
+    letter-spacing:-2px;
+}
+.logo::after{
+    content:"";
+    display:block;width:31px;height:5px;
+    background:#111;transform:skewX(-25deg);
+    margin-top:-5px;margin-left:2px;
+}
+nav{display:flex;gap:28px;align-items:center}
+nav a{font-size:13px;font-weight:bold}
+nav a:hover{opacity:.55}
+.nav-cart{
+    background:#111;color:#fff;padding:10px 15px;border-radius:22px;
+}
+
+.hero{
+    min-height:650px;
+    background:#f2f2f2;
+    display:grid;grid-template-columns:1fr 1.15fr;
+    align-items:center;
+    padding:45px 5%;
+    overflow:hidden;
+}
+.hero-copy{padding:20px 0}
+.hero-kicker{
+    font-size:12px;font-weight:bold;letter-spacing:3px;
+    margin-bottom:20px;
+}
+.hero h1{
+    font-size:clamp(55px,8vw,105px);
+    line-height:.82;
+    letter-spacing:-5px;
+    font-weight:1000;
+    margin-bottom:30px;
+}
+.hero h1 em{font-style:normal;text-decoration:underline}
+.hero p{
+    max-width:470px;color:#555;line-height:1.7;
+    font-size:16px;margin-bottom:30px;
+}
+.btn{
+    display:inline-block;background:#111;color:#fff;
+    padding:16px 28px;border-radius:30px;
+    font-size:13px;font-weight:bold;
+    border:none;cursor:pointer;
+}
+.btn:hover{background:#444}
+.hero-visual{
+    height:550px;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+}
+.hero-visual::before{
+    content:"SHOEZAK";
+    position:absolute;
+    font-size:clamp(70px,12vw,170px);
+    font-weight:1000;color:#e1e1e1;
+    transform:rotate(-10deg);
+    letter-spacing:-8px;
+}
+.hero-visual img{
+    width:100%;height:100%;object-fit:contain;
+    position:relative;z-index:2;
+    filter:drop-shadow(0 30px 25px rgba(0,0,0,.22));
+    transform:rotate(-4deg);
+}
+
+.feature-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-bottom:1px solid #ddd;
+}
+.feature{
+    padding:25px;text-align:center;border-right:1px solid #ddd;
+}
+.feature:last-child{border:0}
+.feature strong{display:block;font-size:14px;margin-bottom:6px}
+.feature span{font-size:12px;color:#777}
+
+.shop{padding:75px 5%}
+.section-head{
+    display:flex;justify-content:space-between;
+    align-items:end;margin-bottom:35px;
+}
+.section-head small{font-size:11px;letter-spacing:3px;font-weight:bold}
+.section-head h2{font-size:48px;letter-spacing:-2px;margin-top:8px}
+.search{
+    width:270px;padding:13px 18px;
+    border:1px solid #ccc;border-radius:24px;outline:none;
+}
+.category{
+    font-size:25px;margin:55px 0 22px;
+    letter-spacing:-1px;
+}
+.products{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+}
+.product{
+    position:relative;background:#f5f5f5;
+    overflow:hidden;transition:.25s;
+}
+.product:hover{transform:translateY(-5px)}
+.product-img{
+    height:310px;display:flex;align-items:center;justify-content:center;
+    background:#f4f4f4;
+}
+.product-img img{
+    width:100%;height:100%;object-fit:contain;
+    padding:15px;transition:.3s;
+}
+.product:hover .product-img img{transform:scale(1.04)}
+.product-info{background:#fff;padding:17px 3px 20px}
+.product h3{font-size:15px;margin-bottom:7px}
+.product .type{font-size:12px;color:#777;margin-bottom:13px}
+.price{font-size:14px;font-weight:bold}
+.view{
+    margin-top:14px;padding:10px 17px;border:0;
+    background:#111;color:#fff;border-radius:22px;
+    font-size:11px;font-weight:bold;cursor:pointer;
+}
+.badge{
+    position:absolute;top:12px;left:12px;
+    background:#fff;padding:7px 10px;
+    font-size:10px;font-weight:bold;z-index:3;
+}
+
+.details{
+    background:#f5f5f5;padding:80px 5%;
+}
+.details h2{text-align:center;font-size:42px;margin-bottom:30px}
+.detail-card{
+    max-width:900px;margin:auto;background:#fff;
+    display:grid;grid-template-columns:1fr 1fr;
+}
+.detail-image{min-height:430px;background:#f4f4f4}
+.detail-image img{width:100%;height:100%;object-fit:contain;padding:25px}
+.detail-info{padding:45px}
+.detail-info h3{font-size:32px;margin-bottom:10px}
+.detail-price{font-size:19px;font-weight:bold;margin-bottom:20px}
+.detail-info p{color:#666;line-height:1.7}
+.size-label{display:block;font-weight:bold;font-size:12px;margin:25px 0 8px}
+select{
+    width:100%;padding:13px;border:1px solid #ccc;
+    background:#fff;
+}
+.add{
+    width:100%;margin-top:18px;
+    padding:15px;border:0;border-radius:25px;
+    background:#111;color:#fff;font-weight:bold;cursor:pointer;
+}
+
+.cart{padding:80px 5%}
+.cart h2{font-size:42px;margin-bottom:30px}
+.cart-box{max-width:950px;margin:auto}
+.cart-item{
+    display:grid;grid-template-columns:1fr auto auto auto;
+    align-items:center;gap:20px;
+    padding:20px 0;border-bottom:1px solid #ddd;
+}
+.cart-info strong{font-size:16px}
+.cart-info small{display:block;color:#777;margin-top:5px}
+.qty{display:flex;align-items:center;gap:10px}
+.qty button{
+    width:30px;height:30px;border:0;background:#111;color:#fff;cursor:pointer
+}
+.remove{background:none;border:0;text-decoration:underline;cursor:pointer}
+.total{text-align:right;font-size:22px;font-weight:bold;margin-top:25px}
+.checkout-link{
+    display:block;background:#111;color:#fff;text-align:center;
+    padding:15px;border-radius:25px;margin-top:18px;
+}
+
+.checkout{background:#f5f5f5;padding:80px 5%}
+.checkout h2{text-align:center;font-size:42px;margin-bottom:30px}
+.checkout-box{
+    max-width:600px;margin:auto;background:#fff;padding:35px;
+}
+.checkout-box input{
+    width:100%;padding:14px;border:1px solid #ccc;
+    margin-bottom:13px;
+}
+.payment{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0}
+.payment label{
+    border:1px solid #ccc;padding:13px;text-align:center;font-size:13px
+}
+.order-total{font-size:20px;font-weight:bold;margin:20px 0}
+
+.about{
+    padding:90px 5%;background:#111;color:#fff;
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;
+}
+.about h2{font-size:70px;line-height:.85;letter-spacing:-4px;margin-top:15px}
+.about p{color:#ccc;line-height:1.8;max-width:530px}
+
+footer{
+    background:#111;color:#fff;border-top:1px solid #333;
+    padding:45px 5%;display:flex;justify-content:space-between;
+}
+footer strong{font-size:20px;font-style:italic}
+footer span{font-size:12px;color:#aaa}
+
+@media(max-width:1000px){
+    .products{grid-template-columns:repeat(2,1fr)}
+    .hero{grid-template-columns:1fr}
+    .hero-visual{height:430px}
+}
+@media(max-width:650px){
+    header{height:auto;padding:16px 5%;gap:15px;flex-direction:column}
+    nav{gap:13px;flex-wrap:wrap;justify-content:center}
+    .hero{text-align:center;padding:50px 6%}
+    .hero p{margin-left:auto;margin-right:auto}
+    .hero h1{letter-spacing:-3px}
+    .feature-strip{grid-template-columns:1fr}
+    .feature{border-right:0;border-bottom:1px solid #ddd}
+    .section-head{display:block}
+    .search{width:100%;margin-top:20px}
+    .products{grid-template-columns:1fr}
+    .detail-card,.about{grid-template-columns:1fr}
+    .detail-info{padding:30px}
+    .cart-item{grid-template-columns:1fr}
+    .payment{grid-template-columns:1fr}
+    footer{flex-direction:column;gap:15px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">FREE SHIPPING ON ORDERS OVER ₱3,000 • SHOEZAK BASKETBALL SHOES</div>
+
+<header>
+    <a href="#home" class="logo">SHOEZAK</a>
+    <nav>
+        <a href="#home">NEW</a>
+        <a href="#shoes">MEN</a>
+        <a href="#shoes">WOMEN</a>
+        <a href="#shoes">BASKETBALL</a>
+        <a href="#about">ABOUT</a>
+        <a href="#cart" class="nav-cart">CART (<span id="cartCount">0</span>)</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <div class="hero-copy">
+        <div class="hero-kicker">SHOEZAK BASKETBALL 2026</div>
+        <h1>PLAY<br>YOUR<br><em>GAME.</em></h1>
+        <p>
+            Basketball footwear made for quick cuts, explosive jumps,
+            strong grip and all-day confidence.
+        </p>
+        <a class="btn" href="#shoes">SHOP BASKETBALL</a>
+    </div>
+
+    <div class="hero-visual">
+        <img src="GIANNIS.avif" alt="ShoeZak basketball shoe">
+    </div>
+</section>
+
+<div class="feature-strip">
+    <div class="feature"><strong>GOOD GRIP</strong><span>Helps with quick movement</span></div>
+    <div class="feature"><strong>LIGHTWEIGHT</strong><span>Easy to move in</span></div>
+    <div class="feature"><strong>GOOD QUALITY</strong><span>Made for everyday play</span></div>
+</div>
+
+<section class="shop" id="shoes">
+    <div class="section-head">
+        <div>
+            <small>SHOEZAK STORE</small>
+            <h2>Featured</h2>
+        </div>
+        <input id="searchInput" class="search" type="text" placeholder="Search shoes..." onkeyup="searchShoes()">
+    </div>
+
+    <h3 class="category">Basketball Shoes</h3>
+
+    <div class="products">
+
+        <article class="product" data-name="ShoeZak Giannis">
+            <span class="badge">BEST SELLER</span>
+            <div class="product-img"><img src="GIANNIS.avif" alt="ShoeZak Giannis"></div>
+            <div class="product-info">
+                <h3>ShoeZak Giannis</h3>
+                <div class="type">Basketball Shoes</div>
+                <div class="price">₱5,299</div>
+                <button class="view" onclick="showProduct('ShoeZak Giannis',5299,'GIANNIS.avif','Supportive basketball shoe for powerful movement, stability and comfort.')">VIEW PRODUCT</button>
+            </div>
+        </article>
+
+        <article class="product" data-name="ShoeZak GT Cut">
+            <span class="badge">NEW</span>
+            <div class="product-img"><img src="GTCUT.avif" alt="ShoeZak GT Cut"></div>
+            <div class="product-info">
+                <h3>ShoeZak GT Cut</h3>
+                <div class="type">Basketball Shoes</div>
+                <div class="price">₱3,499</div>
+                <button class="view" onclick="showProduct('ShoeZak GT Cut',3499,'GTCUT.avif','Lightweight basketball shoe made for quick cuts, speed and responsive movement.')">VIEW PRODUCT</button>
+            </div>
+        </article>
+
+        <article class="product" data-name="ShoeZak Morant">
+            <div class="product-img"><img src="morant.avif" alt="ShoeZak Morant"></div>
+            <div class="product-info">
+                <h3>ShoeZak Morant</h3>
+                <div class="type">Basketball Shoes</div>
+                <div class="price">₱4,399</div>
+                <button class="view" onclick="showProduct('ShoeZak Morant',4399,'morant.avif','Lightweight basketball shoe designed for speed, agility and explosive plays.')">VIEW PRODUCT</button>
+            </div>
+        </article>
+
+        <article class="product" data-name="ShoeZak Kobe Court">
+            <div class="product-img"><img src="KOBE.jpg" alt="ShoeZak Kobe Court"></div>
+            <div class="product-info">
+                <h3>ShoeZak Kobe Court</h3>
+                <div class="type">Basketball Shoes</div>
+                <div class="price">₱6,599</div>
+                <button class="view" onclick="showProduct('ShoeZak Kobe Court',6599,'KOBE.jpg','Responsive basketball shoe designed for quick footwork, jumping and fast plays.')">VIEW PRODUCT</button>
+            </div>
+        </article>
+
+        <article class="product" data-name="ShoeZak Pro Dunk">
+            <span class="badge">HOT</span>
+            <div class="product-img"><img src="Austin.jpg" alt="ShoeZak Pro Dunk"></div>
+            <div class="product-info">
+                <h3>ShoeZak Pro Dunk</h3>
+                <div class="type">Basketball Shoes</div>
+                <div class="price">₱5,799</div>
+                <button class="view" onclick="showProduct('ShoeZak Pro Dunk',5799,'Austin.jpg','Comfortable basketball shoe with good support and stability.')">VIEW PRODUCT</button>
+            </div>
+        </article>
+
+    </div>
+
+    <h3 class="category">Everyday Sneakers</h3>
+
+    <div class="products">
+        <article class="product" data-name="ShoeZak Street">
+            <div class="product-img"><img src="NIK.webp" alt="ShoeZak Street"></div>
+            <div class="product-info">
+                <h3>ShoeZak Street</h3>
+                <div class="type">Lifestyle Sneakers</div>
+                <div class="price">₱1,599</div>
+                <button class="view" onclick="showProduct('ShoeZak Street',1599,'NIK.webp','Clean streetwear sneaker designed for everyday comfort and style.')">VIEW PRODUCT</button>
+            </div>
+        </article>
+
+        <article class="product" data-name="Urban Classic">
+            <div class="product-img"><img src="nike.webp" alt="Urban Classic"></div>
+            <div class="product-info">
+                <h3>Urban Classic</h3>
+                <div class="type">Lifestyle Sneakers</div>
+                <div class="price">₱1,799</div>
+                <button class="view" onclick="showProduct('Urban Classic',1799,'nike.webp','Classic everyday sneaker with a modern design and comfortable fit.')">VIEW PRODUCT</button>
+            </div>
+        </article>
+
+        <article class="product" data-name="Street Runner">
+            <div class="product-img"><img src="Nike Air.jpg" alt="Street Runner"></div>
+            <div class="product-info">
+                <h3>Street Runner</h3>
+                <div class="type">Lifestyle Sneakers</div>
+                <div class="price">₱1,899</div>
+                <button class="view" onclick="showProduct('Street Runner',1899,'Nike Air.jpg','Modern street sneaker made for walking and casual wear.')">VIEW PRODUCT</button>
+            </div>
+        </article>
+
+        <article class="product" data-name="ShoeZak Runner">
+            <div class="product-img"><img src="nikezoomx.avif" alt="ShoeZak Runner"></div>
+            <div class="product-info">
+                <h3>ShoeZak Runner</h3>
+                <div class="type">Running Shoes</div>
+                <div class="price">₱1,699</div>
+                <button class="view" onclick="showProduct('ShoeZak Runner',1699,'nikezoomx.avif','Lightweight running shoe designed for daily exercise, walking and running.')">VIEW PRODUCT</button>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="details" id="product">
+    <h2>Product Details</h2>
+    <div class="detail-card">
+        <div class="detail-image">
+            <img id="productImage" src="GIANNIS.avif" alt="Selected product">
+        </div>
+        <div class="detail-info">
+            <h3 id="productName">Choose a shoe</h3>
+            <div class="detail-price" id="productPrice">---</div>
+            <p id="productDescription">Click VIEW PRODUCT to see the shoe details.</p>
+
+            <label class="size-label" for="shoeSize">SELECT SIZE</label>
+            <select id="shoeSize">
+                <option value="">Choose Size</option>
+                <option>6</option><option>7</option><option>8</option>
+                <option>9</option><option>10</option><option>11</option><option>12</option>
+            </select>
+
+            <button class="add" onclick="addSelectedProduct()">ADD TO CART</button>
+        </div>
+    </div>
+</section>
+
+<section class="cart" id="cart">
+    <h2>Your Cart</h2>
+    <div class="cart-box">
+        <div id="cartItems"><p>Your cart is empty.</p></div>
+        <div class="total">Total: ₱<span id="cartTotal">0</span></div>
+        <a class="checkout-link" href="#checkout" onclick="return goToCheckout()">CHECKOUT</a>
+    </div>
+</section>
+
+<section class="checkout" id="checkout">
+    <h2>Checkout</h2>
+    <div class="checkout-box">
+        <input id="customerName" type="text" placeholder="Full Name">
+        <input id="customerEmail" type="email" placeholder="Email Address">
+        <input id="customerPhone" type="text" placeholder="Phone Number">
+        <input id="customerAddress" type="text" placeholder="Delivery Address">
+
+        <div class="payment">
+            <label><input type="radio" name="payment" value="GCash" checked> GCash</label>
+            <label><input type="radio" name="payment" value="Maya"> Maya</label>
+            <label><input type="radio" name="payment" value="Card"> Card</label>
+        </div>
+
+        <div class="order-total">Order Total: ₱<span id="checkoutTotal">0</span></div>
+        <button class="add" onclick="processPayment()">PLACE ORDER</button>
+    </div>
+</section>
+
+<section class="about" id="about">
+    <div>
+        <small>ABOUT SHOEZAK</small>
+        <h2>MADE<br>TO MOVE.</h2>
+    </div>
+    <p>
+        ShoeZak is a modern footwear store inspired by the energy of sport.
+        We create a clean, bold shopping experience for basketball players,
+        runners and sneaker lovers.
+        <br><br>
+        Find your style and enjoy every step with ShoeZak.
+    </p>
+</section>
+
+<footer>
+    <strong>SHOEZAK</strong>
+    <span>© 2026 ShoeZak Footwear • STEP INTO YOUR STYLE.</span>
+</footer>
+
+<script>
+let cart=[];
+let selectedProduct={name:"",price:0,image:"",description:""};
+
+function showProduct(name,price,image,description){
+    selectedProduct={name,price,image,description};
+    document.getElementById("productName").textContent=name;
+    document.getElementById("productPrice").textContent="₱"+price.toLocaleString();
+    document.getElementById("productImage").src=image;
+    document.getElementById("productDescription").textContent=description;
+    document.getElementById("shoeSize").value="";
+    document.getElementById("product").scrollIntoView({behavior:"smooth"});
+}
+
+function addSelectedProduct(){
+    if(!selectedProduct.name){
+        alert("Please choose a shoe first."); return;
+    }
+    const size=document.getElementById("shoeSize").value;
+    if(!size){
+        alert("Please select a shoe size."); return;
+    }
+
+    const existing=cart.find(x=>x.name===selectedProduct.name && x.size===size);
+    if(existing) existing.quantity++;
+    else cart.push({
+        name:selectedProduct.name,
+        price:selectedProduct.price,
+        size:size,
+        quantity:1
+    });
+
+    updateCart();
+    alert(selectedProduct.name+" has been added to your cart!");
+    document.getElementById("cart").scrollIntoView({behavior:"smooth"});
+}
+
+function updateCart(){
+    const box=document.getElementById("cartItems");
+    box.innerHTML="";
+
+    if(!cart.length){
+        box.innerHTML="<p>Your cart is empty.</p>";
+        document.getElementById("cartCount").textContent="0";
+        document.getElementById("cartTotal").textContent="0";
+        document.getElementById("checkoutTotal").textContent="0";
+        return;
+    }
+
+    let total=0,count=0;
+
+    cart.forEach((item,index)=>{
+        total+=item.price*item.quantity;
+        count+=item.quantity;
+
+        const div=document.createElement("div");
+        div.className="cart-item";
+        div.innerHTML=`
+            <div class="cart-info">
+                <strong>${item.name}</strong>
+                <small>Size ${item.size} • ₱${item.price.toLocaleString()}</small>
+            </div>
+            <div class="qty">
+                <button onclick="changeQuantity(${index},-1)">−</button>
+                <span>${item.quantity}</span>
+                <button onclick="changeQuantity(${index},1)">+</button>
+            </div>
+            <strong>₱${(item.price*item.quantity).toLocaleString()}</strong>
+            <button class="remove" onclick="removeFromCart(${index})">Remove</button>
+        `;
+        box.appendChild(div);
+    });
+
+    document.getElementById("cartCount").textContent=count;
+    document.getElementById("cartTotal").textContent=total.toLocaleString();
+    document.getElementById("checkoutTotal").textContent=total.toLocaleString();
+}
+
+function changeQuantity(index,change){
+    cart[index].quantity+=change;
+    if(cart[index].quantity<=0) cart.splice(index,1);
+    updateCart();
+}
+
+function removeFromCart(index){
+    cart.splice(index,1);
+    updateCart();
+}
+
+function goToCheckout(){
+    if(!cart.length){
+        alert("Your cart is empty. Please add a shoe first.");
+        return false;
+    }
+    updateCart();
+    return true;
+}
+
+function processPayment(){
+    if(!cart.length){
+        alert("Your cart is empty."); return;
+    }
+
+    const name=document.getElementById("customerName").value.trim();
+    const email=document.getElementById("customerEmail").value.trim();
+    const phone=document.getElementById("customerPhone").value.trim();
+    const address=document.getElementById("customerAddress").value.trim();
+    const payment=document.querySelector('input[name="payment"]:checked').value;
+
+    if(!name||!email||!phone||!address){
+        alert("Please complete all customer information."); return;
+    }
+
+    const total=document.getElementById("checkoutTotal").textContent;
+
+    alert(
+        "Thank you for your order, "+name+"!\\n\\n"+
+        "Payment: "+payment+"\\n"+
+        "Order Total: ₱"+total+"\\n\\n"+
+        "Your ShoeZak order has been created."
+    );
+}
+
+function searchShoes(){
+    const search=document.getElementById("searchInput").value.toLowerCase();
+    document.querySelectorAll(".product").forEach(product=>{
+        product.style.display=
+            product.dataset.name.toLowerCase().includes(search) ? "block" : "none";
+    });
+}
+
+updateCart();
+</script>
+</body>
+</html>
